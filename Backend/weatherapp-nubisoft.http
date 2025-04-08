@@ -1,0 +1,6 @@
+@weatherapp_nubisoft_HostAddress = http://localhost:5034
+
+GET {{weatherapp_nubisoft_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
