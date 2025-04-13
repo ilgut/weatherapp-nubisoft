@@ -8,7 +8,7 @@ namespace weatherapp_nubisoft.Controllers;
 
 public class NoAuthController : Controller
 {
-    private static HttpClient _httpClient;
+    private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
 
     public NoAuthController(IConfiguration configuration)
@@ -24,19 +24,55 @@ public class NoAuthController : Controller
     [HttpGet("realtime-weather")]
     public async Task<IActionResult> RealTimeWeather()
     {
-        var weatherGliwice = JsonSerializer.Deserialize<WeatherResponseModel>
-            (await _httpClient.GetAsync("current.json?key=" 
-                                       + _configuration.GetValue<string>("WeatherApiKey") + "&q=Gliwice")
-                .Result.Content.ReadAsStringAsync());
+        var responseGliwice = _httpClient.GetAsync(
+                $"current.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q=Gliwice");
         
-        var weatherHamburg =  JsonSerializer.Deserialize<WeatherResponseModel>
-        (await _httpClient.GetAsync("current.json?key=" 
-                                   + _configuration.GetValue<string>("WeatherApiKey") + "&q=Hamburg")
-            .Result.Content.ReadAsStringAsync());
+        var responseHamburg = _httpClient.GetAsync(
+                $"current.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q=Hamburg");
+        
+        var weatherGliwice = JsonSerializer.Deserialize<WeatherResponseModel>(await responseGliwice.Result.Content.ReadAsStringAsync());
+        
+        var weatherHamburg =  JsonSerializer.Deserialize<WeatherResponseModel>(await responseHamburg.Result.Content.ReadAsStringAsync());
 
+        if (weatherHamburg is null || weatherGliwice is null)
+        {
+            return NotFound();
+        }
+        
         CurrentWeatherResponseModel resultGliwice = new (weatherGliwice);
         CurrentWeatherResponseModel resultHamburg = new (weatherHamburg);
         
         return Ok(JsonSerializer.SerializeToNode(new [] { resultGliwice, resultHamburg }));
+    }
+
+    // default behavior : forecast for 1 day
+    [AllowAnonymous]
+    [HttpGet("forecast-weather")]
+    public async Task<IActionResult> ForecastWeather([FromQuery] int days = 1)
+    {
+        // trial version allows only for max 3 days forecast
+        if (days < 1 || days > 3)
+        {
+            return BadRequest("Days must be between 1 and 3");
+        }
+
+        var responseGliwice = _httpClient.GetAsync(
+                $"forecast.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q=Gliwice&days={days}");
+        
+        var responseHamburg = _httpClient.GetAsync(
+                $"forecast.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q=Hamburg&days={days}");
+        
+        var weatherGliwice = JsonSerializer.Deserialize<WeatherResponseModel>(await responseGliwice.Result.Content.ReadAsStringAsync());
+        var weatherHamburg =  JsonSerializer.Deserialize<WeatherResponseModel>(await responseHamburg.Result.Content.ReadAsStringAsync());
+
+        if (weatherHamburg is null || weatherGliwice is null)
+        {
+            return NotFound();
+        }
+        
+        ForecastWeatherResponseModel forecastGliwice = new (weatherGliwice, days);
+        ForecastWeatherResponseModel forecastHamburg = new (weatherHamburg, days);
+
+        return Ok(JsonSerializer.Serialize(new [] { forecastGliwice, forecastHamburg }));
     }
 }

@@ -212,7 +212,13 @@ public class Astro
     public string MoonPhase { get; set; }
 
     [JsonPropertyName("moon_illumination")]
-    public string MoonIllumination { get; set; }
+    public int MoonIllumination { get; set; }
+    
+    [JsonPropertyName("is_moon_up")]
+    public int IsMoonUp { get; set; }
+    
+    [JsonPropertyName("is_sun_down")]
+    public int IsSunDown { get; set; }
 }
 
 public class HourlyForecast
