@@ -20,6 +20,7 @@ public class CitiesNoAuthController : Controller
         };
     }
     
+    // Returns current weather data for Gliwice and Hamburg
     [AllowAnonymous]
     [HttpGet("realtime-weather")]
     public async Task<IActionResult> RealTimeWeather()
@@ -45,6 +46,7 @@ public class CitiesNoAuthController : Controller
         return Ok(JsonSerializer.SerializeToNode(new [] { resultGliwice, resultHamburg }));
     }
 
+    // Returns weather forecast for Gliwice and Hamburg for 1 to 3 days
     // default behavior : forecast for 1 day
     [AllowAnonymous]
     [HttpGet("forecast-weather")]

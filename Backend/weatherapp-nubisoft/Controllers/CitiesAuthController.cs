@@ -24,6 +24,7 @@ public class CitiesAuthController : Controller
         };
     }
 
+    // Gets current weather data for a single city provided in query
     [HttpGet("registered/current")]
     public async Task<IActionResult> GetCurrentWeatherForCity([FromQuery] string city)
     {
@@ -47,7 +48,8 @@ public class CitiesAuthController : Controller
         return Ok(JsonSerializer.SerializeToNode(new [] { weatherResponse }));
     }
     
-    // default behavior : forecast for 1 day
+    // Gets forecast data for a single city provided in query
+    // Default behavior : forecast for 1 day
     [HttpGet("registered/forecast")]
     public async Task<IActionResult> GetForecastWeatherForCity([FromQuery] string city, [FromQuery] int days = 1)
     {
@@ -71,7 +73,7 @@ public class CitiesAuthController : Controller
         return Ok(JsonSerializer.SerializeToNode(new [] { weatherResponse }));
     }
     
-
+    // Gets current weather for all favorite cities of the logged-in user
     [HttpGet("registered/weather-favourite-cities-current")]
     public async Task<IActionResult> GetWeatherFavouriteCitiesCurrent()
     {
@@ -105,6 +107,7 @@ public class CitiesAuthController : Controller
         return Ok(JsonSerializer.SerializeToNode(weatherBroadcast));
     }
 
+    // Gets forecast for all favorite cities of the logged-in user
     // default behavior : forecast for 1 day
     [HttpGet("registered/weather-favourite-cities-forecast")]
     public async Task<IActionResult> GetWeatherFavouriteCitiesForecast([FromQuery] int days = 1)

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "AUvxXKXrNZe6DYroJDxZlBuhCU5K2yGF/HpjpHZeoAU=",
+  "Source": "weatherapp-nubisoft",
+  "BasePath": "_content/weatherapp-nubisoft",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

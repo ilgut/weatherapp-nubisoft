@@ -23,6 +23,7 @@ public class FavouriteCityCRUDController : ControllerBase
         };
     }
     
+    // Returns a list of the current user's favorite cities
     [HttpGet("registered/get-favourite-cities")]
     public async Task<IActionResult> GetFavouriteCities()
     {
@@ -42,6 +43,7 @@ public class FavouriteCityCRUDController : ControllerBase
         }));
     }
 
+    // Adds a new favorite city to the current user
     [HttpPost("registered/add-favourite-city")]
     public async Task<IActionResult> AddFavouriteCity([FromBody] Dictionary<string, string> body)
     {
@@ -69,6 +71,7 @@ public class FavouriteCityCRUDController : ControllerBase
         return Ok("Favourite city added");
     }
 
+    // Removes a favorite city by name from the current user
     [HttpDelete("registered/delete-favourite-city")]
     public async Task<IActionResult> DeleteFavouriteCity([FromBody] Dictionary<string, string> body)
     {

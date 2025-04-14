@@ -26,6 +26,7 @@ public class AccountController : Controller
         _context = context;
     }
 
+    // Registers a new user account and returns JWT token
     [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDTO model)
@@ -50,6 +51,7 @@ public class AccountController : Controller
         return Ok(new { token });
     }
 
+    // Logs in the user and returns a JWT token
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDTO model)
@@ -70,6 +72,7 @@ public class AccountController : Controller
         return Ok(new { token });
     }
 
+    // Logs out the user
     [Authorize]
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
@@ -79,6 +82,7 @@ public class AccountController : Controller
         return Ok(new {Message = "Successfully logged out."});
     }
     
+    // Generates a JWT Token
     private string GenerateJwtToken(ApplicationUser user)
     {
         var jwtSettings = _configuration.GetSection("JWT");
