@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 
 // Added DbContext for EF Core
 builder.Services.AddDbContext<AppDbContext>(options => 
-    options.UseSqlite(/*builder.Configuration.GetConnectionString("DefaultConnection"))*/ "Data Source=weatherapp.db"));
+    options.UseSqlite("Data Source=weatherapp.db"));
 
 // Configured Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
