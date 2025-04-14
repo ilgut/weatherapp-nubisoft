@@ -19,7 +19,6 @@ WeatherApp is a demonstration web API built with ASP.NET Core and Entity Framewo
 
 ```
 git clone https://github.com/ilgut/weatherapp-nubisoft.git
-cd weatherapp-nubisoft
 ```
 ### 2. (IMPORTANT) Configure WeatherAPI Key
 Edit appsettings.json and provide an environment variable with your API key from https://www.weatherapi.com. You'll need to paste the API key in "WeatherApiKey" field.
