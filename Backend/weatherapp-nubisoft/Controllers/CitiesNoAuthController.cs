@@ -6,12 +6,12 @@ using weatherapp_nubisoft.Models;
 
 namespace weatherapp_nubisoft.Controllers;
 
-public class NoAuthController : Controller
+public class CitiesNoAuthController : Controller
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
 
-    public NoAuthController(IConfiguration configuration)
+    public CitiesNoAuthController(IConfiguration configuration)
     {
         _configuration = configuration;
         _httpClient = new()

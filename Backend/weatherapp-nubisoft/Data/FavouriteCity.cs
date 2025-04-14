@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace weatherapp_nubisoft.Data;
 
 public class FavouriteCity

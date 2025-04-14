@@ -89,6 +89,7 @@ public class AccountController : Controller
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email)
         };
 
