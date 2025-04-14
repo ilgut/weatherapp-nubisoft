@@ -24,6 +24,54 @@ public class CitiesAuthController : Controller
         };
     }
 
+    [HttpGet("registered/current")]
+    public async Task<IActionResult> GetCurrentWeatherForCity([FromQuery] string city)
+    {
+        var userId = User.FindFirst("jti")?.Value;
+        
+        if (userId is null)
+            return Unauthorized("Problem with authorizing, try again.");
+        
+        var weatherRequestResponse = _httpClient.GetAsync(
+            $"current.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q={city}");
+        
+        var weatherJson = await weatherRequestResponse.Result.Content.ReadAsStringAsync();
+            
+        if (weatherRequestResponse.Result.StatusCode != System.Net.HttpStatusCode.OK)
+            return BadRequest("Could not retrieve weather data");
+
+        var weatherDeserialized = JsonSerializer.Deserialize<WeatherResponseModel>(weatherJson);
+        
+        CurrentWeatherResponseModel weatherResponse = new (weatherDeserialized);
+        
+        return Ok(JsonSerializer.SerializeToNode(new [] { weatherResponse }));
+    }
+    
+    // default behavior : forecast for 1 day
+    [HttpGet("registered/forecast")]
+    public async Task<IActionResult> GetForecastWeatherForCity([FromQuery] string city, [FromQuery] int days = 1)
+    {
+        var userId = User.FindFirst("jti")?.Value;
+        
+        if (userId is null)
+            return Unauthorized("Problem with authorizing, try again.");
+        
+        var weatherRequestResponse = _httpClient.GetAsync(
+            $"forecast.json?key={_configuration.GetValue<string>("WeatherApiKey")}&q={city}&days={days}");
+        
+        var weatherJson = await weatherRequestResponse.Result.Content.ReadAsStringAsync();
+            
+        if (weatherRequestResponse.Result.StatusCode != System.Net.HttpStatusCode.OK)
+            return BadRequest("Could not retrieve weather data");
+
+        var weatherDeserialized = JsonSerializer.Deserialize<WeatherResponseModel>(weatherJson);
+        
+        ForecastWeatherResponseModel weatherResponse = new (weatherDeserialized, days);
+        
+        return Ok(JsonSerializer.SerializeToNode(new [] { weatherResponse }));
+    }
+    
+
     [HttpGet("registered/weather-favourite-cities-current")]
     public async Task<IActionResult> GetWeatherFavouriteCitiesCurrent()
     {
@@ -90,4 +138,6 @@ public class CitiesAuthController : Controller
         
         return Ok(JsonSerializer.SerializeToNode(weatherBroadcast));
     }
+    
+    
 }
