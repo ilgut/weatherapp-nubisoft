@@ -32,7 +32,11 @@ email: elijah@company.com
 password: Zaq12wsx!
 
 ### 5. Log in using /login endpoint and look up the weather in your town!
-Don't forget to include the JWT in the Authorization header when calling protected endpoints
+Don't forget to include the JWT in the Authorization header when calling protected endpoints. Accepts a body like:
+{
+    "Email": "",
+    "Password": ""
+}
 
 ## API Endpoints
 ### Public (for demo purposes, no authentication required)
